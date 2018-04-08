@@ -9,5 +9,5 @@ Game is in 3D, with OpenGL.
 
 Status:
 -------
-PC - working version - will be uploaded soon.
-Android - Not working. A working version of this existed back in 2014 (on Android), until my computer died. Lesson learned: always work with backup on the cloud :)
+**PC** - working version - will be uploaded soon. <br/>
+**Android** - Not working. A working version of this existed back in 2014 (on Android), until my computer died. Lesson learned: always work with backup on the cloud :)
