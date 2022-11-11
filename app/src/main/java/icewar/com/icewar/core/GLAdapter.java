@@ -6,6 +6,7 @@
 import android.content.Context;
 import android.graphics.Point;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLU;
 import android.util.Log;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -23,10 +24,9 @@ import net.java.joglutils.model.iModel3DRenderer;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import com.threed.jpct.Texture;
+//import com.threed.jpct.Texture;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +37,9 @@ import java.io.IOException;
 public class GLAdapter implements GLSurfaceView.Renderer, Renderer {
     private final String TAG = getClass().getSimpleName();
 
-    private final static double FOV = 45;
-    private final static double NEAR_CLIP = 1;
-    private final static double FAR_CLIP = 1000;
+    private final static float FOV = 45;
+    private final static float NEAR_CLIP = 1;
+    private final static float FAR_CLIP = 1000;
 
     private final GLU glu = new GLU();
     private final TextRenderer textRenderer = new TextRenderer(new Font("Times New Roman", Font.BOLD, 40));
@@ -75,7 +75,7 @@ public class GLAdapter implements GLSurfaceView.Renderer, Renderer {
     public Object3D loadModel3DS(Context ctx, String path) {
         try {
             Object3D model =
-                    Object3D.mergeAll(Loader.load3DS(ctx.getResources().getAssets().open(path, 5), 1.0f);
+                    Object3D.mergeAll(Loader.load3DS(ctx.getResources().getAssets().open(path, 5), 1.0f));
 
 //            model.setUseTexture(true);
 //
@@ -94,6 +94,31 @@ public class GLAdapter implements GLSurfaceView.Renderer, Renderer {
         }
         catch (IOException e) {
             Log.d(TAG, "Error", e);
+            return null;
+        }
+    }
+
+    public Model loadModel(String path) {
+        try {
+            Model model = ModelFactory.createModel(path);
+
+            model.setUseTexture(true);
+
+            model.setUseLighting(true);
+
+            // Render the bounding box of the entire model
+            model.setRenderModelBounds(false);
+
+            // Render the bounding boxes for all of the objects of the model
+            model.setRenderObjectBounds(false);
+
+            // Make the model unit size
+            model.setUnitizeSize(true);
+
+            return model;
+        }
+        catch (ModelLoadException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -250,11 +275,9 @@ public class GLAdapter implements GLSurfaceView.Renderer, Renderer {
         final Vector position = camera.getPosition();
         final Vector center = camera.getCenter();
         final Vector up = camera.getUp();
-        glu.gluLookAt(
-            position.x(), position.y(), position.z(),
-            center.x(), center.y(), center.z(),
-            up.x(), up.y(), up.z()
-        );
+        GLU.gluLookAt(gl, position.x(), position.y(), position.z(),
+                center.x(), center.y(), center.z(),
+                up.x(), up.y(), up.z());
 
         this.gl = gl;
         this.callback.drawObjects();
@@ -277,7 +300,7 @@ public class GLAdapter implements GLSurfaceView.Renderer, Renderer {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL10.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(FOV, ratio, NEAR_CLIP, FAR_CLIP);
+        GLU.gluPerspective(gl, FOV, ratio, NEAR_CLIP, FAR_CLIP);
         gl.glMatrixMode(GL10.GL_MODELVIEW);
         gl.glLoadIdentity();
     }

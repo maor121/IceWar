@@ -11,7 +11,7 @@ import icewar.com.icewar.core.*;
  * @see GameObject
  */
 public class ThirdPersonCamera {
-    private static final double FOLLOW_DISTANCE = 10;
+    private static final float FOLLOW_DISTANCE = 10;
 
     private final Camera camera;
     private GameObject gameObject;
@@ -32,7 +32,8 @@ public class ThirdPersonCamera {
         final Vector currentOrientation = this.gameObject.getOrientation();
         final double yaw = (270-currentOrientation.x())*Math.PI/180.0;
         final Vector currentPosition = this.gameObject.getPosition();
-        final Vector positionChange = new Vector(Math.cos(yaw), 0, Math.sin(yaw)).mul(FOLLOW_DISTANCE);
+        final Vector positionChange = new Vector(
+                (float)Math.cos(yaw), 0, (float)Math.sin(yaw)).mul(FOLLOW_DISTANCE);
         final Vector newPosition = currentPosition.subtract(positionChange);
         newPosition.setY(FOLLOW_DISTANCE);
 

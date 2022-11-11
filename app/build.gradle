@@ -20,8 +20,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'androidx.appcompat:appcompat:1.0.0'
-    compile 'com.google.android.material:material:1.0.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.android.support:appcompat-v7:30.0.0'
+
+//    compile "org.jogamp.gluegen:gluegen-rt:2.3.1"
+//    compile "org.jogamp.jogl:jogl-all:2.3.1"
+    implementation group: 'net.java.dev.jogl', name: 'jogl', version: '1.1.1-rc6'
 }
